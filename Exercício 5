@@ -1,0 +1,45 @@
+import math
+def produtorio(lista):
+    """
+    Calcula o produto de todos os elementos de uma lista.
+    """
+    if 0 in lista:
+        return 0
+    else:
+        prod = lista[0]
+        for i in range(1,len(lista)):
+            prod *= lista[i]
+    return prod
+    
+def l_k(lista, k, x):
+    """
+    Calcula o k-ésimo polinômio de Lagrange aplicado em x a partir dos pontos da lista.
+    """
+    ListaAux = []
+    for j in range(0,len(lista)):
+        if j != k:
+            ListaAux.append((x -lista[j])/(lista[k] - lista[j]))
+    return produtorio(ListaAux)
+
+def PoliLagrange(listaX, listaY, x):
+    soma = 0
+    for k in range(len(listaX)):
+        soma = soma + l_k(listaX, k, x) * listaY[k]
+    return soma
+   
+def f(x):
+    return 1/(1+x**2)
+    
+a = 2
+n = 6
+listan=[0]
+listax = [-a]
+listay = [f(-a)]
+en = ['-']
+for i in range(1,n+1):
+    listan.append(i)
+    listax.append(-a + (i*2*a)/(n))
+    listay.append(f(listax[i]))
+    x = 1.5
+    en.append(abs(f(x) - PoliLagrange(listax, listay, x)))
+    print(PoliLagrange(listax, listay, x))
