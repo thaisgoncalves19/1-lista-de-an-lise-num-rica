@@ -1,4 +1,8 @@
 import math
+
+#######################################################
+#Funções para calcular o polinômio interpolador de Lagrange em um ponto.
+
 def produtorio(lista):
     """
     Calcula o produto de todos os elementos de uma lista.
@@ -27,19 +31,42 @@ def PoliLagrange(listaX, listaY, x):
         soma = soma + l_k(listaX, k, x) * listaY[k]
     return soma
    
+#######################################################
+
+#Função para calcular o erro entre f e p_n
+
+def erro(n,a):
+    h = 2 * a /n
+    listaX = []
+    listaY = []
+    for i in range(n+1):
+        listaX.append(-a + i * h)
+        listaY.append(f(-a + i * h))
+    
+    N = 100
+    hN = 2 * a/N
+    
+    listaXX = []
+    for i in range(N+1):
+        listaXX.append(-a + i * hN)
+    
+    listaErro = []
+    
+    for x in listaXX:
+        listaErro.append(abs(f(x) - PoliLagrange(listaX,listaY,x) ))
+    
+    erro = max(listaErro)
+    
+    return erro
+
+   
+#Imprime o erro considerando n pontos igualmente espaçados no intervalo [-a, a]
 def f(x):
     return 1/(1+x**2)
-    
-a = 2
-n = 6
-listan=[0]
-listax = [-a]
-listay = [f(-a)]
-en = ['-']
+n=24
+a = 5
 for i in range(1,n+1):
-    listan.append(i)
-    listax.append(-a + (i*2*a)/(n))
-    listay.append(f(listax[i]))
-    x = 1.5
-    en.append(abs(f(x) - PoliLagrange(listax, listay, x)))
-    print(PoliLagrange(listax, listay, x))
+    print(i,erro(i,a))
+    
+   
+# Quando n fica grande os valores de e_n também ficam grandes.
